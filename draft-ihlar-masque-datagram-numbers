@@ -19,11 +19,11 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
+title: "A Sequence Number Extension for HTTP Datagrams"
 abbrev: "TODO - Abbreviation"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
+docname: draft-ihlar-masque-datagram-numbers
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
@@ -32,9 +32,9 @@ v: 3
 area: AREA
 workgroup: WG Working Group
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - masque
+ - datagram
+ - multipath
 venue:
   group: WG
   type: Working Group
@@ -45,9 +45,9 @@ venue:
 
 author:
  -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
+    fullname: Marcus Ihlar
+    organization: Ericsson AB
+    email: marcus.ihlar@ericsson.com
 
 normative:
 
@@ -56,8 +56,7 @@ informative:
 
 --- abstract
 
-TODO Abstract
-
+This document defines a sequence number extension to HTTP datagrams used to carry proxied UDP payload or IP datagrams. This extension is useful when HTTP datagrams are transported on top of a multipath protocol that does not ensure in-order delivery as it allows a masque endpoint to implement reordering logic specific to its needs.
 
 --- middle
 
