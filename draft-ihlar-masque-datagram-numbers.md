@@ -56,7 +56,9 @@ informative:
 
 --- abstract
 
-This document defines a sequence number extension to HTTP datagrams used to carry proxied UDP payload or IP datagrams. This extension is useful when HTTP datagrams are transported on top of a multipath protocol that does not ensure in-order delivery as it allows a masque endpoint to implement reordering logic specific to its needs.
+This document defines a sequence number extension to HTTP datagrams used to carry proxied UDP payload or IP datagrams. 
+This extension is useful when HTTP datagrams are transported on top of a multipath protocol that does not ensure 
+in-order delivery as it allows a masque endpoint to implement reordering logic specific to its needs.
 
 --- middle
 
@@ -64,11 +66,40 @@ This document defines a sequence number extension to HTTP datagrams used to carr
 
 TODO Introduction
 
-
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
+# Sequence Number Datagram Extension
+
+The Sequence Number datagram extension prepends sequence numbers to HTTP datagrams. Datagram sequence numbers are 
+unsigned integers initiated to 0 and are incremented by 1 for every transmitted HTTP datagram, except for when the 
+integer overflows and is reset to 0. 
+
+## Registration
+
+Masque endpoints indicate support for the Sequence Number Datagram extension by use of the TODO: DEFINE HTTP BOOLEAN 
+HEADER HERE with a value of ?1. 
+
+An endpoint registers the use of sequence numbers by sending a REGISTER_SEQ_NUM_CONTEXT Capsule with the following
+structure:
+
+~~~
+REGISTER_SEQ_NUM_CONTEXT Capsule {
+  Type (i) = REGISTER_SEQ_NUM_CONTEXT,
+  Length (i),
+  Context ID (i),
+  Inner Context ID (i),
+  Representation (8)
+}
+~~~
+
+Context ID: The context ID used for Sequence Number Datagrams.
+
+Inner Context ID: The context ID of the inner datagram, the value MUST be equal to a previously registered context ID.
+
+Representation: The number of bits used to encode the sequence number, the value MUST be one of the following: 8, 16, 
+32 or 64.
 
 # Security Considerations
 
