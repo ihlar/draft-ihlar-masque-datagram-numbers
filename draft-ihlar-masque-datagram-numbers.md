@@ -35,6 +35,7 @@ keyword:
  - masque
  - datagram
  - multipath
+
 venue:
   group: WG
   type: Working Group
@@ -94,22 +95,42 @@ REGISTER_SEQ_NUM_CONTEXT Capsule {
 }
 ~~~
 
+The capsule has the following fields:
+
 Context ID: The context ID used for Sequence Number Datagrams.
 
 Inner Context ID: The context ID of the inner datagram, the value MUST be equal to a previously registered context ID.
 
-Representation: The number of bits used to encode the sequence number, the value MUST be one of the following: 8, 16, 
-32 or 64.
+Representation: The size in bits of the unsigned interger used to encode the sequence number, the value MUST be one of 
+the following: 8, 16, 32 or 64.
+
+## Format
+
+Sequence Number Datagrams have the following format:
+
+~~~
+Sequence Number Datagram {
+  Context ID (i),
+  Sequence Number (8..64),
+  Inner Data (..)
+} 
+~~~
+
+Sequence Number: Unsigned integer of size specified in registration, indicates the transmission order of the datagagram.
+
+Inner Data: The datagram payload with a format indicated by the Inner Context ID associated with this context.
 
 # Security Considerations
 
-TODO Security
+Users of the sequence number extension typically maintain a reordering buffer, a maliscious endpoint might assign 
+sequence numbers out-of-order so that the receiver attempts to buffer as many datagrams as possible. 
 
 
 # IANA Considerations
 
-This document has no IANA actions.
+HTTP Header
 
+Capsule
 
 --- back
 
