@@ -1168,6 +1168,14 @@ in-order delivery as it allows a masque endpoint to implement reordering logic s
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-capsule-types" class="internal xref">Capsule types</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-http-headers" class="internal xref">HTTP headers</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
@@ -1189,7 +1197,7 @@ in-order delivery as it allows a masque endpoint to implement reordering logic s
       </h2>
 <p id="section-1-1">This document defines a sequence number extension to HTTP datagrams. Sequence numbers at the HTTP datagram layer allows
 a receiving endpoint to implement arbitrary reordering logic, which can be useful when proxied datagrams are sent over
-multiple paths simultaneously, e.g. using the multipath QUIC extension. The extension applies to HTTP datagarms when
+multiple paths simultaneously, e.g. using the multipath QUIC extension. The extension applies to HTTP datagrams when
 they are used with the extended CONNECT method and the protocols are either connect-ip or connect-udp.<a href="#section-1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1212,7 +1220,9 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <p id="section-3-1">The Sequence Number datagram extension prepends sequence numbers to HTTP datagrams. Datagram sequence numbers are
 unsigned integers initiated to 0 and are incremented by 1 for every transmitted HTTP datagram, except for when the
 integer overflows and is reset to 0. The extension can be used with the HTTP CONNECT method when the :protocol pseudo
-header is equal to "connect-udp" or "connect-ip".<a href="#section-3-1" class="pilcrow">¶</a></p>
+header is equal to "connect-udp" or "connect-ip". Use of the sequence number extension is determined per request, and
+the scope of a datagram sequence is limited to a single request stream. Datagrams with different quarter stream IDs
+can not share a common sequence number space.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div id="registration">
 <section id="section-3.1">
         <h3 id="name-registration">
@@ -1239,8 +1249,7 @@ previously registered Context ID.<a href="#section-3.1-6" class="pilcrow">¶</a>
 <p id="section-3.1-7">Representation: The size in bits of the unsigned interger used to encode the sequence number, the value <span class="bcp14">MUST</span> be one of
 the following: 8, 16, 32 or 64.<a href="#section-3.1-7" class="pilcrow">¶</a></p>
 <p id="section-3.1-8">It is possible to use multiple contexts for a single sequence, this is needed if multiple datagram payload formats are
-used in parallel. To add a context to an existing sequence an endpoint sends an ADD_SEQUENCE_CONTEXT Capsule. The
-capsule has the following format:<a href="#section-3.1-8" class="pilcrow">¶</a></p>
+used in parallel. To add a context to an existing sequence an endpoint sends an ADD_SEQUENCE_CONTEXT Capsule.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.1-9">
 <pre>
 ADD_SEQUENCE_CONTEXT Capsule {
@@ -1320,8 +1329,65 @@ on the buffer size to limit such attacks.<a href="#section-4-4" class="pilcrow">
       <h2 id="name-iana-considerations">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-5-1">HTTP Header<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">Capsule<a href="#section-5-2" class="pilcrow">¶</a></p>
+<div id="capsule-types">
+<section id="section-5.1">
+        <h3 id="name-capsule-types">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-capsule-types" class="section-name selfRef">Capsule types</a>
+        </h3>
+<p id="section-5.1-1">This document adds following entries to the "HTTP Capsule Types" registry:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Capsule Type</th>
+              <th class="text-left" rowspan="1" colspan="1">Value</th>
+              <th class="text-left" rowspan="1" colspan="1">Specification</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">REGISTER_SEQUENCE_CONTEXT</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD</td>
+              <td class="text-left" rowspan="1" colspan="1">(This document)</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ADD_SEQUENCE_CONTEXT</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD</td>
+              <td class="text-left" rowspan="1" colspan="1">(This document)</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="http-headers">
+<section id="section-5.2">
+        <h3 id="name-http-headers">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-http-headers" class="section-name selfRef">HTTP headers</a>
+        </h3>
+<p id="section-5.2-1">This document adds following entry to the "Hypertext Transfer Protocol (HTTP) Field Name Registry":<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-2">
+          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Field Name</th>
+              <th class="text-left" rowspan="1" colspan="1">Template</th>
+              <th class="text-left" rowspan="1" colspan="1">Status</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+              <th class="text-left" rowspan="1" colspan="1">Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">DG-Sequence</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">permanent</td>
+              <td class="text-left" rowspan="1" colspan="1">(This document)</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
 </section>
 </div>
 <section id="section-6">

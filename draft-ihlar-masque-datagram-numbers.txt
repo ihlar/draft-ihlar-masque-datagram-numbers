@@ -76,6 +76,8 @@ Table of Contents
      3.2.  Datagram Format
    4.  Security Considerations
    5.  IANA Considerations
+     5.1.  Capsule types
+     5.2.  HTTP headers
    6.  Normative References
    Acknowledgments
    Authors' Addresses
@@ -87,7 +89,7 @@ Table of Contents
    endpoint to implement arbitrary reordering logic, which can be useful
    when proxied datagrams are sent over multiple paths simultaneously,
    e.g. using the multipath QUIC extension.  The extension applies to
-   HTTP datagarms when they are used with the extended CONNECT method
+   HTTP datagrams when they are used with the extended CONNECT method
    and the protocols are either connect-ip or connect-udp.
 
 2.  Conventions and Definitions
@@ -106,6 +108,10 @@ Table of Contents
    datagram, except for when the integer overflows and is reset to 0.
    The extension can be used with the HTTP CONNECT method when the
    :protocol pseudo header is equal to "connect-udp" or "connect-ip".
+   Use of the sequence number extension is determined per request, and
+   the scope of a datagram sequence is limited to a single request
+   stream.  Datagrams with different quarter stream IDs can not share a
+   common sequence number space.
 
 3.1.  Registration
 
@@ -139,7 +145,7 @@ Table of Contents
    It is possible to use multiple contexts for a single sequence, this
    is needed if multiple datagram payload formats are used in parallel.
    To add a context to an existing sequence an endpoint sends an
-   ADD_SEQUENCE_CONTEXT Capsule.  The capsule has the following format:
+   ADD_SEQUENCE_CONTEXT Capsule.
 
    ADD_SEQUENCE_CONTEXT Capsule {
      Type (i) = ADD_SEQUENCE_CONTEXT,
@@ -212,9 +218,33 @@ Table of Contents
 
 5.  IANA Considerations
 
-   HTTP Header
+5.1.  Capsule types
 
-   Capsule
+   This document adds following entries to the "HTTP Capsule Types"
+   registry:
+
+          +===========================+=======+=================+
+          | Capsule Type              | Value | Specification   |
+          +===========================+=======+=================+
+          | REGISTER_SEQUENCE_CONTEXT | TBD   | (This document) |
+          +---------------------------+-------+-----------------+
+          | ADD_SEQUENCE_CONTEXT      | TBD   | (This document) |
+          +---------------------------+-------+-----------------+
+
+                                  Table 1
+
+5.2.  HTTP headers
+
+   This document adds following entry to the "Hypertext Transfer
+   Protocol (HTTP) Field Name Registry":
+
+    +=============+==========+===========+=================+==========+
+    | Field Name  | Template | Status    | Reference       | Comments |
+    +=============+==========+===========+=================+==========+
+    | DG-Sequence |          | permanent | (This document) |          |
+    +-------------+----------+-----------+-----------------+----------+
+
+                                  Table 2
 
 6.  Normative References
 
