@@ -117,7 +117,8 @@ Table of Contents
 
    Endpoints indicate support for Sequence Number Datagram type by
    including the boolean-valued Item Structured Field "DG-Sequence: ?1"
-   in the HTTP Request and Response headers.
+   in the HTTP Request and Response headers (See Section 3.3.6 of
+   [RFC8941] for information about the boolean format.).
 
    A new datagram sequence is registered by sending a
    REGISTER_SEQUENCE_CONTEXT capsule.
@@ -187,15 +188,14 @@ Table of Contents
 
 4.  Security Considerations
 
-   Although the usage of the sequence number are not defined by this
-   specification there are an underlying assumption that the sequence
+   Although the usage of the sequence number is not defined by this
+   specification, there is an underlying assumption that the sequence
    numbers are assigned in transmission order of HTTP datagram sent in
    the context of this HTTP request.  Any attacker that can break that
-   assumption will thus impact any node using the included sequence
-   number.  By altering the sequence number in HTTP datagrams the
-   attacker can impact a user of the sequence number extension for the
-   purpose of performing reordering, forcing it to buffer datagrams for
-   several negative purposes:
+   assumption will thus impact any node that uses the sequence number.
+   By altering the sequence number in HTTP datagrams, an attacker can
+   impact how much data a receiver is buffering for the following
+   purposes:
 
    *  Resource exhaustion attack by maximizing the amount of data
       buffered in each HTTP request context
@@ -212,9 +212,9 @@ Table of Contents
    attacker to impact the HTTP datagram flow between a source and a
    destination.
 
-   A HTTP Datagram sequnce number user that buffer datagrams should
-   ensure that they have protection against resource exhaustion attacks
-   by having some limits on the buffer size to limit such attacks.
+   A user that buffers datagrams based on sequence numbers should ensure
+   that they have protection against resource exhaustion attacks by
+   limiting the size of their buffers.
 
 5.  IANA Considerations
 
@@ -256,6 +256,10 @@ Table of Contents
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8941]  Nottingham, M. and P-H. Kamp, "Structured Field Values for
+              HTTP", RFC 8941, DOI 10.17487/RFC8941, February 2021,
+              <https://www.rfc-editor.org/rfc/rfc8941>.
 
 Acknowledgments
 
