@@ -45,10 +45,15 @@ venue:
   latest: https://example.com/LATEST
 
 author:
- -
+-
     fullname: Marcus Ihlar
     organization: Ericsson AB
     email: marcus.ihlar@ericsson.com
+-
+   ins:  M. Westerlund
+   name: Magnus Westerlund
+   org: Ericsson
+   email: magnus.westerlund@ericsson.com
 
 normative:
 
