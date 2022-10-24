@@ -12,12 +12,10 @@
 /.targets.mk
 /.venv/
 /.vscode/
-/lib
 /node_modules/
 /versioned/
 Gemfile.lock
 archive.json
-draft-ihlar-masque-datagram-numbers.xml
 package-lock.json
 report.xml
 !requirements.txt
