@@ -23,7 +23,7 @@ title: "A Sequence Number Extension for HTTP Datagrams"
 abbrev: "TODO - Abbreviation"
 category: info
 
-docname: draft-ihlar-masque-datagram-numbers
+docname: draft-ihlar-masque-datagram-numbers-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
