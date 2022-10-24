@@ -160,9 +160,32 @@ Payload: Datagram payload.
 
 # Security Considerations
 
-Users of the sequence number extension typically maintain a reordering buffer, a malicious endpoint might assign
-sequence numbers out-of-order so that the receiver attempts to buffer as many datagrams as possible.
+Although the usage of the sequence number are not defined by this specification
+there are an underlying assumption that the sequence numbers are assigned in
+transmission order of HTTP datagram sent in the context of this HTTP
+request. Any attacker that can break that assumption will thus impact any node
+using the included sequence number. By altering the sequence number in HTTP
+datagrams the attacker can impact a user of the sequence number extension for
+the purpose of performing reordering, forcing it to buffer datagrams for several
+negative purposes:
 
+  * Resource exhaustion attack by maximizing the amount of data buffered in each
+    HTTP request context
+
+  * Introducing reordering, jitter and additional delay in the path properties
+    for these datagram
+
+  * Cause the sequence number using node to drop some HTTP Datagrams by causing
+    them to be so far reordered that some policy in the receiving node drops the
+    datagram.
+
+A malicious endpoint is more likely to mount a resource exhaustion attack, while
+HTTP intermediares could be used by an third party attacker to impact the HTTP
+datagram flow between a source and a destination.
+
+A HTTP Datagram sequnce number user that buffer datagrams should ensure that
+they have protection against resource exhaustion attacks by having some limits
+on the buffer size to limit such attacks.
 
 # IANA Considerations
 
