@@ -80,7 +80,7 @@ out-of-order data needs to be handled by the endpoints. -->
 
 This document defines a sequence number extension to HTTP datagrams. Sequence numbers at the HTTP datagram layer allows
 a receiving endpoint to implement arbitrary reordering logic, which can be useful when proxied datagrams are sent over
-multiple paths simultaneously, e.g. using the multipath QUIC extension. The extension applies to HTTP datagarms when
+multiple paths simultaneously, e.g. using the multipath QUIC extension. The extension applies to HTTP datagrams when
 they are used with the extended CONNECT method and the protocols are either connect-ip or connect-udp.
 
 # Conventions and Definitions
@@ -92,7 +92,10 @@ they are used with the extended CONNECT method and the protocols are either conn
 The Sequence Number datagram extension prepends sequence numbers to HTTP datagrams. Datagram sequence numbers are
 unsigned integers initiated to 0 and are incremented by 1 for every transmitted HTTP datagram, except for when the
 integer overflows and is reset to 0. The extension can be used with the HTTP CONNECT method when the :protocol pseudo
-header is equal to "connect-udp" or "connect-ip".
+header is equal to "connect-udp" or "connect-ip". Use of the sequence number extension is determined per request, and
+the scope of a datagram sequence is limited to a single request stream. Datagrams with different quarter stream IDs
+can not share a common sequence number space.
+
 
 ## Registration
 
@@ -122,8 +125,7 @@ Representation: The size in bits of the unsigned interger used to encode the seq
 the following: 8, 16, 32 or 64.
 
 It is possible to use multiple contexts for a single sequence, this is needed if multiple datagram payload formats are
-used in parallel. To add a context to an existing sequence an endpoint sends an ADD_SEQUENCE_CONTEXT Capsule. The
-capsule has the following format:
+used in parallel. To add a context to an existing sequence an endpoint sends an ADD_SEQUENCE_CONTEXT Capsule.
 
 ~~~
 ADD_SEQUENCE_CONTEXT Capsule {
@@ -194,9 +196,22 @@ on the buffer size to limit such attacks.
 
 # IANA Considerations
 
-HTTP Header
+## Capsule types
 
-Capsule
+This document adds following entries to the "HTTP Capsule Types" registry:
+
+| Capsule Type               | Value | Specification   |
+| -------------------------- | ----- | --------------- |
+| REGISTER_SEQUENCE_CONTEXT  | TBD   | (This document) |
+| ADD_SEQUENCE_CONTEXT       | TBD   | (This document) |
+
+## HTTP headers
+
+This document adds following entry to the "Hypertext Transfer Protocol (HTTP) Field Name Registry":
+
+| Field Name   | Template | Status    | Reference       | Comments |
+| ------------ | -------- | --------- | --------------- | -------- |
+| DG-Sequence  |          | permanent | (This document) |          |
 
 --- back
 
