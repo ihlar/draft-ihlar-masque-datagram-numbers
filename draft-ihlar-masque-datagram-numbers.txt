@@ -78,19 +78,22 @@ Table of Contents
    5.  IANA Considerations
      5.1.  Capsule types
      5.2.  HTTP headers
-   6.  Normative References
+   6.  References
+     6.1.  Normative References
+     6.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
 1.  Introduction
 
-   This document defines a sequence number extension to HTTP datagrams.
-   Sequence numbers at the HTTP datagram layer allows a receiving
-   endpoint to implement arbitrary reordering logic, which can be useful
-   when proxied datagrams are sent over multiple paths simultaneously,
-   e.g. using the multipath QUIC extension.  The extension applies to
-   HTTP datagrams when they are used with the extended CONNECT method
-   and the protocols are either connect-ip or connect-udp.
+   This document defines a sequence number extension to HTTP datagrams
+   [RFC9297].  Sequence numbers at the HTTP datagram layer allows a
+   receiving endpoint to implement arbitrary reordering logic, which can
+   be useful when proxied datagrams are sent over multiple paths
+   simultaneously, e.g. using the multipath QUIC extension [MPQUIC].
+   The extension applies to HTTP datagrams when they are used with the
+   extended CONNECT method and the protocols are either connect-ip
+   [CONNECT-IP] or connect-udp [RFC9298].
 
 2.  Conventions and Definitions
 
@@ -246,7 +249,17 @@ Table of Contents
 
                                   Table 2
 
-6.  Normative References
+6.  References
+
+6.1.  Normative References
+
+   [CONNECT-IP]
+              Pauly, T., Schinazi, D., Chernyakhovsky, A., Kühlewind,
+              M., and M. Westerlund, "IP Proxying Support for HTTP",
+              Work in Progress, Internet-Draft, draft-ietf-masque-
+              connect-ip-03, 27 September 2022,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-masque-
+              connect-ip-03>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -260,6 +273,22 @@ Table of Contents
    [RFC8941]  Nottingham, M. and P-H. Kamp, "Structured Field Values for
               HTTP", RFC 8941, DOI 10.17487/RFC8941, February 2021,
               <https://www.rfc-editor.org/rfc/rfc8941>.
+
+   [RFC9297]  Schinazi, D. and L. Pardue, "HTTP Datagrams and the
+              Capsule Protocol", RFC 9297, DOI 10.17487/RFC9297, August
+              2022, <https://www.rfc-editor.org/rfc/rfc9297>.
+
+   [RFC9298]  Schinazi, D., "Proxying UDP in HTTP", RFC 9298,
+              DOI 10.17487/RFC9298, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9298>.
+
+6.2.  Informative References
+
+   [MPQUIC]   Liu, Y., Ma, Y., De Coninck, Q., Bonaventure, O., Huitema,
+              C., and M. Kühlewind, "Multipath Extension for QUIC", Work
+              in Progress, Internet-Draft, draft-ietf-quic-multipath-03,
+              24 October 2022, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-quic-multipath-03>.
 
 Acknowledgments
 
