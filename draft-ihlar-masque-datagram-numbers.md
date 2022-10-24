@@ -100,7 +100,8 @@ can not share a common sequence number space.
 ## Registration
 
 Endpoints indicate support for Sequence Number Datagram type by including the boolean-valued Item Structured Field
-"DG-Sequence: ?1" in the HTTP Request and Response headers.
+"DG-Sequence: ?1" in the HTTP Request and Response headers (See {{Section 3.3.6 of !RFC8941}} for information about the
+boolean format.).
 
 A new datagram sequence is registered by sending a REGISTER_SEQUENCE_CONTEXT capsule.
 
@@ -167,14 +168,13 @@ Payload: Datagram payload.
 
 # Security Considerations
 
-Although the usage of the sequence number are not defined by this specification
-there are an underlying assumption that the sequence numbers are assigned in
+Although the usage of the sequence number is not defined by this specification,
+there is an underlying assumption that the sequence numbers are assigned in
 transmission order of HTTP datagram sent in the context of this HTTP
 request. Any attacker that can break that assumption will thus impact any node
-using the included sequence number. By altering the sequence number in HTTP
-datagrams the attacker can impact a user of the sequence number extension for
-the purpose of performing reordering, forcing it to buffer datagrams for several
-negative purposes:
+that uses the sequence number. By altering the sequence number in HTTP
+datagrams, an attacker can impact how much data a receiver is buffering for the
+following purposes:
 
   * Resource exhaustion attack by maximizing the amount of data buffered in each
     HTTP request context
@@ -190,9 +190,9 @@ A malicious endpoint is more likely to mount a resource exhaustion attack, while
 HTTP intermediares could be used by an third party attacker to impact the HTTP
 datagram flow between a source and a destination.
 
-A HTTP Datagram sequnce number user that buffer datagrams should ensure that
-they have protection against resource exhaustion attacks by having some limits
-on the buffer size to limit such attacks.
+A user that buffers datagrams based on sequence numbers should ensure that they
+have protection against resource exhaustion attacks by limiting the size of
+their buffers.
 
 # IANA Considerations
 
