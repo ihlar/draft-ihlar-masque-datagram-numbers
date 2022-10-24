@@ -78,10 +78,12 @@ proxy IP or UDP. QUIC streams ensure that proxied datagrams are delivered in-ord
 with corresponding delay variation. With QUIC datagrams there will be no delay variations in the proxy, but instead
 out-of-order data needs to be handled by the endpoints. -->
 
-This document defines a sequence number extension to HTTP datagrams. Sequence numbers at the HTTP datagram layer allows
-a receiving endpoint to implement arbitrary reordering logic, which can be useful when proxied datagrams are sent over
-multiple paths simultaneously, e.g. using the multipath QUIC extension. The extension applies to HTTP datagrams when
-they are used with the extended CONNECT method and the protocols are either connect-ip or connect-udp.
+This document defines a sequence number extension to HTTP datagrams {{!RFC9297}}. Sequence numbers at the HTTP
+datagram layer allows a receiving endpoint to implement arbitrary reordering logic, which can be useful when proxied
+datagrams are sent over multiple paths simultaneously, e.g. using the multipath QUIC extension
+{{?MPQUIC=I-D.ietf-quic-multipath-03}}. The extension applies to HTTP datagrams when they are used with the extended
+CONNECT method and the protocols are either connect-ip {{!CONNECT-IP=I-D.ietf-masque-connect-ip}} or connect-udp
+{{!RFC9298}}.
 
 # Conventions and Definitions
 
