@@ -65,7 +65,11 @@ in-order delivery as it allows a masque endpoint to implement reordering logic s
 
 # Introduction
 
-TODO Introduction
+When HTTP datagrams are transmitted over a QUIC connection they can either be sent as QUIC datagrams or be 
+encoded as capsules that are sent in QUIC streams. The main difference between these two "modes" is that data sent in a 
+QUIC stream is guaranteed to be delivered at the other end and in the right order, while there are no such guarantees 
+for data sent as QUIC datagrams. The multipath extension to QUIC allows for simultaneous transmission of data over 
+multiple paths. When tehre is 
 
 # Conventions and Definitions
 
@@ -79,7 +83,7 @@ integer overflows and is reset to 0.
 
 ## Registration
 
-Endpoints indicate support for TIMESTAMP Datagram type by including the boolean-valued Item Structured Field 
+Endpoints indicate support for Sequence Number Datagram type by including the boolean-valued Item Structured Field 
 "DG-Sequence: ?1" in the HTTP Request and Response headers. 
 
 An endpoint registers the use of sequence numbers by sending a REGISTER_SEQ_NUM_CONTEXT Capsule with the following
