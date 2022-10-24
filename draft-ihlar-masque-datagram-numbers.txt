@@ -4,8 +4,9 @@
 
 Masque Working Group                                            M. Ihlar
 Internet-Draft                                               Ericsson AB
-Intended status: Informational                           24 October 2022
-Expires: 27 April 2023
+Intended status: Informational                             M. Westerlund
+Expires: 27 April 2023                                          Ericsson
+                                                         24 October 2022
 
 
              A Sequence Number Extension for HTTP Datagrams
@@ -77,7 +78,7 @@ Table of Contents
    5.  IANA Considerations
    6.  Normative References
    Acknowledgments
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -230,8 +231,13 @@ Acknowledgments
 
    TODO acknowledge.
 
-Author's Address
+Authors' Addresses
 
    Marcus Ihlar
    Ericsson AB
    Email: marcus.ihlar@ericsson.com
+
+
+   Magnus Westerlund
+   Ericsson
+   Email: magnus.westerlund@ericsson.com
