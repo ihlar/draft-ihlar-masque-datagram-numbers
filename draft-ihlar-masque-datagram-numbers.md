@@ -39,10 +39,10 @@ keyword:
 venue:
   group: WG
   type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  mail: masque@ietf.org
+  arch: https://mailarchive.ietf.org/arch/browse/masque/
+  github: ihlar/draft-ihlar-masque-datagram-numbers
+  # latest: https://example.com/LATEST
 
 author:
 -
