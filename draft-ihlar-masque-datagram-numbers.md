@@ -21,7 +21,7 @@
 ###
 title: "A Sequence Number Extension for HTTP Datagrams"
 abbrev: "TODO - Abbreviation"
-category: info
+category: std
 
 docname: draft-ihlar-masque-datagram-numbers-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
@@ -80,7 +80,7 @@ out-of-order data needs to be handled by the endpoints. -->
 
 This document defines a sequence number extension to HTTP datagrams {{!RFC9297}}. Sequence numbers at the HTTP
 datagram layer allows a receiving endpoint to implement arbitrary reordering logic, which can be useful when proxied
-datagrams are sent over multiple paths simultaneously, e.g. using the multipath QUIC extension
+datagrams are sent over multiple paths simultaneously, such as when using the multipath QUIC extension
 {{?MPQUIC=I-D.ietf-quic-multipath-03}}. The extension applies to HTTP datagrams when they are used with the extended
 CONNECT method and the protocols are either connect-ip {{!CONNECT-IP=I-D.ietf-masque-connect-ip}} or connect-udp
 {{!RFC9298}}.
@@ -95,9 +95,8 @@ The Sequence Number datagram extension prepends sequence numbers to HTTP datagra
 unsigned integers initiated to 0 and are incremented by 1 for every transmitted HTTP datagram, except for when the
 integer overflows and is reset to 0. The extension can be used with the HTTP CONNECT method when the :protocol pseudo
 header is equal to "connect-udp" or "connect-ip". Use of the sequence number extension is determined per request, and
-the scope of a datagram sequence is limited to a single request stream. Datagrams with different quarter stream IDs
-can not share a common sequence number space.
-
+the scope of a datagram sequence is limited to a single request stream. Datagrams with different quarter stream IDs have
+distinct sequence number spaces.
 
 ## Registration
 
@@ -105,7 +104,8 @@ Endpoints indicate support for Sequence Number Datagram type by including the bo
 "DG-Sequence: ?1" in the HTTP Request and Response headers (See {{Section 3.3.6 of !RFC8941}} for information about the
 boolean format.).
 
-A new datagram sequence is registered by sending a REGISTER_SEQUENCE_CONTEXT capsule.
+A datagram sequence is registered by sending a REGISTER_SEQUENCE_CONTEXT capsule. An endpoint MAY send multiple
+REGISTER_SEQUENCE_CONTEXT capsules in order to support multiple payload formats.
 
 ~~~
 REGISTER_SEQUENCE_CONTEXT Capsule {
@@ -113,45 +113,24 @@ REGISTER_SEQUENCE_CONTEXT Capsule {
   Length (i),
   Context ID (i),
   Payload Context ID (i),
-  Representation (8)
+  [Representation (8)]
 }
 ~~~
 
 The capsule has the following fields:
 
-Context ID: Identifies a sequence number context.
+Context ID: Identifies a sequence number context. The value MUST be unique within the scope of a request stream.
 
 Payload Context ID: Identifies the type of payload that follows a sequence number. The value MUST be equal to a
 previously registered Context ID.
 
 Representation: The size in bits of the unsigned interger used to encode the sequence number, the value MUST be one of
-the following: 8, 16, 32 or 64.
-
-It is possible to use multiple contexts for a single sequence, this is needed if multiple datagram payload formats are
-used in parallel. To add a context to an existing sequence an endpoint sends an ADD_SEQUENCE_CONTEXT Capsule.
-
-~~~
-ADD_SEQUENCE_CONTEXT Capsule {
-  Type (i) = ADD_SEQUENCE_CONTEXT,
-  Length (i),
-  Sequence Context ID (i),
-  Context ID (i),
-  Payload Context ID (i)
-}
-~~~
-
-The capsule has the following fields:
-
-Sequence Context: Identifies the original sequence number context.
-
-Context ID: A new context identifier that refers to the same sequence identified by the Sequence Context ID.
-
-Payload Context ID: Identifies the type of payload that follows a sequence number. The value MUST be equal to a
-previously registered Context ID.
+the following: 8, 16, 32 or 64. This field MUST be present in the first REGISTER_SEQUENCE_CONTEXT capsule sent on a
+request stream and it MAY be omitted in subsequent capsules.
 
 ## Datagram Format
 
-A Sequence Number Datagrams has the following format:
+A Sequence Number Datagram has the following format:
 
 ~~~
 Sequence Number Datagram {
@@ -205,7 +184,6 @@ This document adds following entries to the "HTTP Capsule Types" registry:
 | Capsule Type               | Value | Specification   |
 | -------------------------- | ----- | --------------- |
 | REGISTER_SEQUENCE_CONTEXT  | TBD   | (This document) |
-| ADD_SEQUENCE_CONTEXT       | TBD   | (This document) |
 
 ## HTTP headers
 
