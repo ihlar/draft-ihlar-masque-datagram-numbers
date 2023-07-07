@@ -5,8 +5,8 @@
 Masque Working Group                                            M. Ihlar
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                           M. Westerlund
-Expires: 14 September 2023                                      Ericsson
-                                                           13 March 2023
+Expires: 8 January 2024                                         Ericsson
+                                                             7 July 2023
 
 
              A Sequence Number Extension for HTTP Datagrams
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 September 2023.
+   This Internet-Draft will expire on 8 January 2024.
 
 Copyright Notice
 
@@ -70,6 +70,7 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
+     1.1.  ATSSS
    2.  Conventions and Definitions
    3.  Sequence Number Datagram Extension
      3.1.  Registration
@@ -94,6 +95,57 @@ Table of Contents
    [MPQUIC].  The extension applies to HTTP datagrams when they are used
    with the extended CONNECT method and the protocols are either
    connect-ip [CONNECT-IP] or connect-udp [RFC9298].
+
+1.1.  ATSSS
+
+   The motivation for this extension comes from the Access Traffic
+   Steering, Switching and Splitting (ATSSS) feature defined for the 5G
+   System by 3GPP in section 5.32 of [_3GPP_TS_23.501].
+
+   ATSSS is an optional feature in the 5G system that enables concurrent
+   use of 3GPP and non-3GPP accesses with a single PDU session.  A set
+   of steering functionalities and steering modes that determine the
+   types of concurrent path usage supported by ATSSS.  As of Release 18
+   of the 5G System Architecture specification there are three steering
+   functionalities defined for ATSSS: ATSSS-LL, MPTCP and MPQUIC.
+   ATSSS-LL is a "Lower Layer Functionality" that operates below the IP
+   layer, it can be used to steer, switch and split all types of traffic
+   including both IP and Ethernet PDU Sessions.  MPTCP and MPQUIC are so
+   called "Higher Layer Functionalities" and operate above the IP layer
+   to steer, switch and split TCP and UPD traffic respectively.
+
+   The MPQUIC steering functionality makese use of multipath capable
+   HTT3 proxies that support the extended CONNECT method with the
+   connect-udp protocol.  The MPQUIC steering mode defines two datagram
+   modes that are used for encapsulation of UDP payload.  The default
+   mode is to send HTTP datagrams unreliably over QUIC datagrams.  The
+   second, optional mode is to encapsulate UDP payload in HTTP datagrams
+   that are extended with sequence numbers.  The mode to use is decided
+   based on the steering mode in use and application requirements
+   through the use of ATSS Rules.
+
+   The different steering modes determine the way traffic flows make use
+   of concurrent paths.  There are two modes where the use of sequence
+   numbers is beneficial: Load Balancing traffic steering and Redundant
+   traffic steering.
+
+   The Load Balancing steering mode implies parallel transmission over
+   the 3GPP and non-3GPP accesses, this mode is commonly known as
+   bandwidth aggregation.  Splitting a data transmission over multiple
+   pahts while increasing the available bandwith, often leads to packets
+   being delivered out-of-order.  Whether the packet disorder is a much
+   of a problem depends on the properties of the protocols and
+   applications carried over the proxied payload.  Large degrees of
+   reordering might trigger spurious packet loss detection.  By
+   buffering data received out-of-order an ATSSS endpoint can minimize
+   the amount of data delivered out-of-order to the final endpoints.
+
+   Redundant traffic steering implies duplication of traffic over the
+   3GPP and non-3GPP accesses.  Such a steering mode, while costly, is
+   useful for applications and users with strong requirements on
+   availability.  When data is duplicated at one end it needs to be de-
+   duplicated at the other end.  There are many ways de-duplication can
+   be achieved, sequence numbering is one of them.
 
 2.  Conventions and Definitions
 
@@ -235,9 +287,9 @@ Table of Contents
    [CONNECT-IP]
               Pauly, T., Schinazi, D., Chernyakhovsky, A., Kühlewind,
               M., and M. Westerlund, "Proxying IP in HTTP", Work in
-              Progress, Internet-Draft, draft-ietf-masque-connect-ip-08,
-              1 March 2023, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-masque-connect-ip-08>.
+              Progress, Internet-Draft, draft-ietf-masque-connect-ip-13,
+              28 April 2023, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-masque-connect-ip-13>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -248,7 +300,7 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [RFC8941]  Nottingham, M. and P-H. Kamp, "Structured Field Values for
+   [RFC8941]  Nottingham, M. and P. Kamp, "Structured Field Values for
               HTTP", RFC 8941, DOI 10.17487/RFC8941, February 2021,
               <https://www.rfc-editor.org/rfc/rfc8941>.
 
@@ -264,9 +316,15 @@ Table of Contents
 
    [MPQUIC]   Liu, Y., Ma, Y., De Coninck, Q., Bonaventure, O., Huitema,
               C., and M. Kühlewind, "Multipath Extension for QUIC", Work
-              in Progress, Internet-Draft, draft-ietf-quic-multipath-03,
-              24 October 2022, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-quic-multipath-03>.
+              in Progress, Internet-Draft, draft-ietf-quic-multipath-04,
+              13 March 2023, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-quic-multipath-04>.
+
+   [_3GPP_TS_23.501]
+              3rd Generation Partnership Project, "System architecture
+              for the 5G System (5GS) - Release 18", July 2023,
+              <https://www.3gpp.org/ftp/Specs/
+              archive/23_series/23.501/23501-i22.zip>.
 
 Acknowledgments
 
