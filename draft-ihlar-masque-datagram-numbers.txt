@@ -5,8 +5,8 @@
 Masque Working Group                                            M. Ihlar
 Internet-Draft                                               Ericsson AB
 Intended status: Standards Track                           M. Westerlund
-Expires: 8 January 2024                                         Ericsson
-                                                             7 July 2023
+Expires: 11 January 2024                                        Ericsson
+                                                            10 July 2023
 
 
              A Sequence Number Extension for HTTP Datagrams
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 January 2024.
+   This Internet-Draft will expire on 11 January 2024.
 
 Copyright Notice
 
@@ -100,7 +100,7 @@ Table of Contents
 
    The motivation for this extension comes from the Access Traffic
    Steering, Switching and Splitting (ATSSS) feature defined for the 5G
-   System by 3GPP in section 5.32 of [_3GPP_TS_23.501].
+   System by 3GPP in section 5.32 of [_3GPPTS23.501].
 
    ATSSS is an optional feature in the 5G system that enables concurrent
    use of 3GPP and non-3GPP accesses with a single PDU session.  A set
@@ -320,7 +320,7 @@ Table of Contents
               13 March 2023, <https://datatracker.ietf.org/doc/html/
               draft-ietf-quic-multipath-04>.
 
-   [_3GPP_TS_23.501]
+   [_3GPPTS23.501]
               3rd Generation Partnership Project, "System architecture
               for the 5G System (5GS) - Release 18", July 2023,
               <https://www.3gpp.org/ftp/Specs/
