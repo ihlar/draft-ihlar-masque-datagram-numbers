@@ -102,11 +102,12 @@ ATSSS is an optional feature in the 5G system that enables concurrent use of 3GP
 PDU session. A set of steering functionalities and steering modes that determine the types of concurrent path usage
 supported by ATSSS. As of Release 18 of the 5G System Architecture specification there are three steering
 functionalities defined for ATSSS: ATSSS-LL, MPTCP and Multipath QUIC. ATSSS-LL is a "Lower Layer Functionality" that operates
-below the IP layer, it can be used to steer, switch and split all types of traffic including both IP and Ethernet PDU
-Sessions. MPTCP and Multipath QUIC are so called "Higher Layer Functionalities" and operate above the IP layer to steer, switch
-and split TCP and UPD traffic respectively.
+below the IP layer, it can be used to steer to one path or switch from one path to another split all types of traffic including 
+both IP and Ethernet PDU Sessions, but does not support spliting of one traffic flow among multiple paths.
+MPTCP and Multipath QUIC are so called "Higher Layer Functionalities" and operate above the IP layer to steer, switch
+and split TCP and UDP traffic respectively.
 
-The Multipath QUIC steering functionality makese use of multipath capable HTT3 proxies that support the extended CONNECT method
+The Multipath QUIC steering functionality makes use of multipath capable HTTP3 proxies that support the extended CONNECT method
 with the connect-udp protocol. The Multipath QUIC steering mode defines two datagram modes that are used for encapsulation of
 UDP payload. The default mode is to send HTTP datagrams unreliably over QUIC datagrams. The second, optional mode is to
 encapsulate UDP payload in HTTP datagrams that are extended with sequence numbers. The mode to use is decided based on
@@ -120,7 +121,8 @@ commonly known as bandwidth aggregation. Splitting a data transmission over mult
 available bandwith, often leads to packets being delivered out-of-order. Whether the packet disorder is a much of a
 problem depends on the properties of the protocols and applications carried over the proxied payload. Large degrees of
 reordering might trigger spurious packet loss detection. By buffering data received out-of-order an ATSSS endpoint can
-minimize the amount of data delivered out-of-order to the final endpoints.
+compensate the latency difference between the paths andminimize the amount of data delivered out-of-order to the final
+endpoints.
 
 Redundant traffic steering implies duplication of traffic over the 3GPP and non-3GPP accesses. Such a steering mode,
 while costly, is useful for applications and users with strong requirements on availability.  When data is duplicated
