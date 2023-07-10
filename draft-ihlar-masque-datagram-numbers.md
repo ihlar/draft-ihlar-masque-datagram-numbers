@@ -58,7 +58,7 @@ author:
 normative:
 
 informative:
-  3GPP TS 23.501:
+  3GPPTS23.501:
     target: https://www.3gpp.org/ftp/Specs/archive/23_series/23.501/23501-i22.zip
     title: System architecture for the 5G System (5GS) - Release 18
     # seriesinfo:
@@ -96,7 +96,7 @@ CONNECT method and the protocols are either connect-ip {{!CONNECT-IP=I-D.ietf-ma
 ## ATSSS
 
 The motivation for this extension comes from the Access Traffic Steering, Switching and Splitting (ATSSS) feature
-defined for the 5G System by 3GPP in section 5.32 of {{?3GPP TS 23.501}}.
+defined for the 5G System by 3GPP in section 5.32 of {{3GPPTS23.501}}.
 
 ATSSS is an optional feature in the 5G system that enables concurrent use of 3GPP and non-3GPP accesses with a single
 PDU session. A set of steering functionalities and steering modes that determine the types of concurrent path usage
