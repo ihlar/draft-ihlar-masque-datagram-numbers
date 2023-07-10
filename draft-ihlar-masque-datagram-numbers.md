@@ -72,7 +72,7 @@ informative:
 
 This document defines a sequence number extension to HTTP datagrams used to carry proxied UDP payload or IP datagrams.
 This extension is useful when HTTP datagrams are transported on top of a multipath protocol that does not ensure
-in-order delivery as it allows a masque endpoint to implement reordering logic specific to its needs.
+in-order delivery as it allows for example a masque endpoint to implement reordering logic specific to its needs.
 
 --- middle
 
@@ -89,8 +89,8 @@ out-of-order data needs to be handled by the endpoints. -->
 This document defines a sequence number extension to HTTP datagrams {{!RFC9297}}. Sequence numbers at the HTTP
 datagram layer allows a receiving endpoint to implement arbitrary reordering logic, which can be useful when proxied
 datagrams are sent over multiple paths simultaneously, such as when using the multipath QUIC extension
-{{?MPQUIC=I-D.ietf-quic-multipath-04}}. The extension applies to HTTP datagrams when they are used with the extended
-CONNECT method and the protocols are either connect-ip {{!CONNECT-IP=I-D.ietf-masque-connect-ip}} or connect-udp
+{{?MPQUIC=I-D.ietf-quic-multipath-04}}. The extension applies to HTTP datagrams and specifices its use with the extended
+CONNECT method, and the protocols connect-ip {{!CONNECT-IP=I-D.ietf-masque-connect-ip}} and connect-udp
 {{!RFC9298}}.
 
 ## ATSSS
@@ -101,13 +101,13 @@ defined for the 5G System by 3GPP in section 5.32 of {{3GPPTS23.501}}.
 ATSSS is an optional feature in the 5G system that enables concurrent use of 3GPP and non-3GPP accesses with a single
 PDU session. A set of steering functionalities and steering modes that determine the types of concurrent path usage
 supported by ATSSS. As of Release 18 of the 5G System Architecture specification there are three steering
-functionalities defined for ATSSS: ATSSS-LL, MPTCP and MPQUIC. ATSSS-LL is a "Lower Layer Functionality" that operates
+functionalities defined for ATSSS: ATSSS-LL, MPTCP and Multipath QUIC. ATSSS-LL is a "Lower Layer Functionality" that operates
 below the IP layer, it can be used to steer, switch and split all types of traffic including both IP and Ethernet PDU
-Sessions. MPTCP and MPQUIC are so called "Higher Layer Functionalities" and operate above the IP layer to steer, switch
+Sessions. MPTCP and Multipath QUIC are so called "Higher Layer Functionalities" and operate above the IP layer to steer, switch
 and split TCP and UPD traffic respectively.
 
-The MPQUIC steering functionality makese use of multipath capable HTT3 proxies that support the extended CONNECT method
-with the connect-udp protocol. The MPQUIC steering mode defines two datagram modes that are used for encapsulation of
+The Multipath QUIC steering functionality makese use of multipath capable HTT3 proxies that support the extended CONNECT method
+with the connect-udp protocol. The Multipath QUIC steering mode defines two datagram modes that are used for encapsulation of
 UDP payload. The default mode is to send HTTP datagrams unreliably over QUIC datagrams. The second, optional mode is to
 encapsulate UDP payload in HTTP datagrams that are extended with sequence numbers. The mode to use is decided based on
 the steering mode in use and application requirements through the use of ATSS Rules.
@@ -124,8 +124,7 @@ minimize the amount of data delivered out-of-order to the final endpoints.
 
 Redundant traffic steering implies duplication of traffic over the 3GPP and non-3GPP accesses. Such a steering mode,
 while costly, is useful for applications and users with strong requirements on availability.  When data is duplicated
-at one end it needs to be de-duplicated at the other end. There are many ways de-duplication can be achieved, sequence
-numbering is one of them.
+at one end it needs to be de-duplicated at the other end. Sequence number enables the easiest way to perform de-duplication.
 
 
 # Conventions and Definitions
@@ -227,6 +226,7 @@ This document adds following entries to the "HTTP Capsule Types" registry:
 | Capsule Type               | Value | Specification   |
 | -------------------------- | ----- | --------------- |
 | REGISTER_SEQUENCE_CONTEXT  | TBD   | (This document) |
+{: #iana-capsule-type title="New Capsule Type to register" cols="l l l"}
 
 ## HTTP headers
 
@@ -235,7 +235,7 @@ This document adds following entry to the "Hypertext Transfer Protocol (HTTP) Fi
 | Field Name   | Template | Status    | Reference       | Comments |
 | ------------ | -------- | --------- | --------------- | -------- |
 | DG-Sequence  |          | permanent | (This document) |          |
-
+{: #iana-http-field title="HTTP Field Name to register" cols="l l l l l"}
 --- back
 
 # Acknowledgments
