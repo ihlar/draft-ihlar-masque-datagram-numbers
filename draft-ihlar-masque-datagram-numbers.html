@@ -10,7 +10,7 @@
 <meta content="
        This document defines a sequence number extension to HTTP datagrams used to carry proxied UDP payload or IP datagrams.
 This extension is useful when HTTP datagrams are transported on top of a multipath protocol that does not ensure
-in-order delivery as it allows a masque endpoint to implement reordering logic specific to its needs. 
+in-order delivery as it allows for example a masque endpoint to implement reordering logic specific to its needs. 
     " name="description">
 <meta content="xml2rfc 3.17.4" name="generator">
 <meta content="masque" name="keyword">
@@ -1093,7 +1093,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document defines a sequence number extension to HTTP datagrams used to carry proxied UDP payload or IP datagrams.
 This extension is useful when HTTP datagrams are transported on top of a multipath protocol that does not ensure
-in-order delivery as it allows a masque endpoint to implement reordering logic specific to its needs.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+in-order delivery as it allows for example a masque endpoint to implement reordering logic specific to its needs.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1223,8 +1223,8 @@ in-order delivery as it allows a masque endpoint to implement reordering logic s
 <p id="section-1-1">This document defines a sequence number extension to HTTP datagrams <span>[<a href="#RFC9297" class="cite xref">RFC9297</a>]</span>. Sequence numbers at the HTTP
 datagram layer allows a receiving endpoint to implement arbitrary reordering logic, which can be useful when proxied
 datagrams are sent over multiple paths simultaneously, such as when using the multipath QUIC extension
-<span>[<a href="#MPQUIC" class="cite xref">MPQUIC</a>]</span>. The extension applies to HTTP datagrams when they are used with the extended
-CONNECT method and the protocols are either connect-ip <span>[<a href="#CONNECT-IP" class="cite xref">CONNECT-IP</a>]</span> or connect-udp
+<span>[<a href="#MPQUIC" class="cite xref">MPQUIC</a>]</span>. The extension applies to HTTP datagrams and specifices its use with the extended
+CONNECT method, and the protocols connect-ip <span>[<a href="#CONNECT-IP" class="cite xref">CONNECT-IP</a>]</span> and connect-udp
 <span>[<a href="#RFC9298" class="cite xref">RFC9298</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <div id="atsss">
 <section id="section-1.1">
@@ -1236,12 +1236,12 @@ defined for the 5G System by 3GPP in section 5.32 of <span>[<a href="#_3GPPTS23.
 <p id="section-1.1-2">ATSSS is an optional feature in the 5G system that enables concurrent use of 3GPP and non-3GPP accesses with a single
 PDU session. A set of steering functionalities and steering modes that determine the types of concurrent path usage
 supported by ATSSS. As of Release 18 of the 5G System Architecture specification there are three steering
-functionalities defined for ATSSS: ATSSS-LL, MPTCP and MPQUIC. ATSSS-LL is a "Lower Layer Functionality" that operates
+functionalities defined for ATSSS: ATSSS-LL, MPTCP and Multipath QUIC. ATSSS-LL is a "Lower Layer Functionality" that operates
 below the IP layer, it can be used to steer, switch and split all types of traffic including both IP and Ethernet PDU
-Sessions. MPTCP and MPQUIC are so called "Higher Layer Functionalities" and operate above the IP layer to steer, switch
+Sessions. MPTCP and Multipath QUIC are so called "Higher Layer Functionalities" and operate above the IP layer to steer, switch
 and split TCP and UPD traffic respectively.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
-<p id="section-1.1-3">The MPQUIC steering functionality makese use of multipath capable HTT3 proxies that support the extended CONNECT method
-with the connect-udp protocol. The MPQUIC steering mode defines two datagram modes that are used for encapsulation of
+<p id="section-1.1-3">The Multipath QUIC steering functionality makese use of multipath capable HTT3 proxies that support the extended CONNECT method
+with the connect-udp protocol. The Multipath QUIC steering mode defines two datagram modes that are used for encapsulation of
 UDP payload. The default mode is to send HTTP datagrams unreliably over QUIC datagrams. The second, optional mode is to
 encapsulate UDP payload in HTTP datagrams that are extended with sequence numbers. The mode to use is decided based on
 the steering mode in use and application requirements through the use of ATSS Rules.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
@@ -1255,8 +1255,7 @@ reordering might trigger spurious packet loss detection. By buffering data recei
 minimize the amount of data delivered out-of-order to the final endpoints.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
 <p id="section-1.1-6">Redundant traffic steering implies duplication of traffic over the 3GPP and non-3GPP accesses. Such a steering mode,
 while costly, is useful for applications and users with strong requirements on availability.  When data is duplicated
-at one end it needs to be de-duplicated at the other end. There are many ways de-duplication can be achieved, sequence
-numbering is one of them.<a href="#section-1.1-6" class="pilcrow">¶</a></p>
+at one end it needs to be de-duplicated at the other end. Sequence number enables the easiest way to perform de-duplication.<a href="#section-1.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1379,8 +1378,12 @@ their buffers.<a href="#section-4-4" class="pilcrow">¶</a></p>
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-capsule-types" class="section-name selfRef">Capsule types</a>
         </h3>
 <p id="section-5.1-1">This document adds following entries to the "HTTP Capsule Types" registry:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<span id="name-new-capsule-type-to-registe"></span><div id="iana-capsule-type">
 <table class="center" id="table-1">
-          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+          <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-new-capsule-type-to-registe" class="selfRef">New Capsule Type to register</a>
+          </caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Capsule Type</th>
@@ -1396,6 +1399,7 @@ their buffers.<a href="#section-4-4" class="pilcrow">¶</a></p>
             </tr>
           </tbody>
         </table>
+</div>
 </section>
 </div>
 <div id="http-headers">
@@ -1404,8 +1408,12 @@ their buffers.<a href="#section-4-4" class="pilcrow">¶</a></p>
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-http-headers" class="section-name selfRef">HTTP headers</a>
         </h3>
 <p id="section-5.2-1">This document adds following entry to the "Hypertext Transfer Protocol (HTTP) Field Name Registry":<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<span id="name-http-field-name-to-register"></span><div id="iana-http-field">
 <table class="center" id="table-2">
-          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+          <caption>
+<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#name-http-field-name-to-register" class="selfRef">HTTP Field Name to register</a>
+          </caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Field Name</th>
@@ -1425,6 +1433,7 @@ their buffers.<a href="#section-4-4" class="pilcrow">¶</a></p>
             </tr>
           </tbody>
         </table>
+</div>
 </section>
 </div>
 </section>

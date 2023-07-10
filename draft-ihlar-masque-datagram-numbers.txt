@@ -17,8 +17,9 @@ Abstract
    This document defines a sequence number extension to HTTP datagrams
    used to carry proxied UDP payload or IP datagrams.  This extension is
    useful when HTTP datagrams are transported on top of a multipath
-   protocol that does not ensure in-order delivery as it allows a masque
-   endpoint to implement reordering logic specific to its needs.
+   protocol that does not ensure in-order delivery as it allows for
+   example a masque endpoint to implement reordering logic specific to
+   its needs.
 
 About This Document
 
@@ -92,9 +93,9 @@ Table of Contents
    receiving endpoint to implement arbitrary reordering logic, which can
    be useful when proxied datagrams are sent over multiple paths
    simultaneously, such as when using the multipath QUIC extension
-   [MPQUIC].  The extension applies to HTTP datagrams when they are used
-   with the extended CONNECT method and the protocols are either
-   connect-ip [CONNECT-IP] or connect-udp [RFC9298].
+   [MPQUIC].  The extension applies to HTTP datagrams and specifices its
+   use with the extended CONNECT method, and the protocols connect-ip
+   [CONNECT-IP] and connect-udp [RFC9298].
 
 1.1.  ATSSS
 
@@ -107,22 +108,23 @@ Table of Contents
    of steering functionalities and steering modes that determine the
    types of concurrent path usage supported by ATSSS.  As of Release 18
    of the 5G System Architecture specification there are three steering
-   functionalities defined for ATSSS: ATSSS-LL, MPTCP and MPQUIC.
-   ATSSS-LL is a "Lower Layer Functionality" that operates below the IP
-   layer, it can be used to steer, switch and split all types of traffic
-   including both IP and Ethernet PDU Sessions.  MPTCP and MPQUIC are so
-   called "Higher Layer Functionalities" and operate above the IP layer
-   to steer, switch and split TCP and UPD traffic respectively.
+   functionalities defined for ATSSS: ATSSS-LL, MPTCP and Multipath
+   QUIC.  ATSSS-LL is a "Lower Layer Functionality" that operates below
+   the IP layer, it can be used to steer, switch and split all types of
+   traffic including both IP and Ethernet PDU Sessions.  MPTCP and
+   Multipath QUIC are so called "Higher Layer Functionalities" and
+   operate above the IP layer to steer, switch and split TCP and UPD
+   traffic respectively.
 
-   The MPQUIC steering functionality makese use of multipath capable
-   HTT3 proxies that support the extended CONNECT method with the
-   connect-udp protocol.  The MPQUIC steering mode defines two datagram
-   modes that are used for encapsulation of UDP payload.  The default
-   mode is to send HTTP datagrams unreliably over QUIC datagrams.  The
-   second, optional mode is to encapsulate UDP payload in HTTP datagrams
-   that are extended with sequence numbers.  The mode to use is decided
-   based on the steering mode in use and application requirements
-   through the use of ATSS Rules.
+   The Multipath QUIC steering functionality makese use of multipath
+   capable HTT3 proxies that support the extended CONNECT method with
+   the connect-udp protocol.  The Multipath QUIC steering mode defines
+   two datagram modes that are used for encapsulation of UDP payload.
+   The default mode is to send HTTP datagrams unreliably over QUIC
+   datagrams.  The second, optional mode is to encapsulate UDP payload
+   in HTTP datagrams that are extended with sequence numbers.  The mode
+   to use is decided based on the steering mode in use and application
+   requirements through the use of ATSS Rules.
 
    The different steering modes determine the way traffic flows make use
    of concurrent paths.  There are two modes where the use of sequence
@@ -144,8 +146,8 @@ Table of Contents
    3GPP and non-3GPP accesses.  Such a steering mode, while costly, is
    useful for applications and users with strong requirements on
    availability.  When data is duplicated at one end it needs to be de-
-   duplicated at the other end.  There are many ways de-duplication can
-   be achieved, sequence numbering is one of them.
+   duplicated at the other end.  Sequence number enables the easiest way
+   to perform de-duplication.
 
 2.  Conventions and Definitions
 
@@ -265,7 +267,7 @@ Table of Contents
           | REGISTER_SEQUENCE_CONTEXT | TBD   | (This document) |
           +---------------------------+-------+-----------------+
 
-                                  Table 1
+                   Table 1: New Capsule Type to register
 
 5.2.  HTTP headers
 
@@ -278,7 +280,7 @@ Table of Contents
     | DG-Sequence |          | permanent | (This document) |          |
     +-------------+----------+-----------+-----------------+----------+
 
-                                  Table 2
+                    Table 2: HTTP Field Name to register
 
 6.  References
 
