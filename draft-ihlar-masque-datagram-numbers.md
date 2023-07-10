@@ -95,43 +95,50 @@ CONNECT method, and the protocols connect-ip {{!CONNECT-IP=I-D.ietf-masque-conne
 
 ## ATSSS
 
-The motivation for this extension comes from the Access Traffic Steering, Switching and Splitting (ATSSS) feature
-defined for the 5G System by 3GPP in section 5.32 of {{3GPPTS23.501}}.
+This extension is motivated by the Access Traffic Steering, Switching, and Splitting (ATSSS) feature
+outlined for the 5G System by 3GPP in section 5.32 of {{3GPPTS23.501}}.
 
-ATSSS is an optional feature in the 5G system that enables concurrent use of 3GPP and non-3GPP accesses with a single
-PDU session. A set of steering functionalities and steering modes that determine the types of concurrent path usage
-supported by ATSSS. As of Release 18 of the 5G System Architecture specification there are three steering
-functionalities defined for ATSSS: ATSSS-LL, MPTCP and Multipath QUIC. ATSSS-LL is a "Lower Layer Functionality" that operates
-below the IP layer, it can be used to steer to one path or switch from one path to another split all types of traffic including 
-both IP and Ethernet PDU Sessions, but does not support spliting of one traffic flow among multiple paths.
-MPTCP and Multipath QUIC are so called "Higher Layer Functionalities" and operate above the IP layer to steer, switch
-and split TCP and UDP traffic respectively.
+ATSSS, an optional feature of the 5G system, permits the concurrent usage of 3GPP and non-3GPP accesses within a single
+PDU session. This is managed by a number of steering functionalities and modes, determining the types of supported
+concurrent path usage. As of Release 18 of the 5G System Architecture specification, three steering functionalities have
+been defined for ATSSS: ATSSS-LL, MPTCP, and Multipath QUIC.
 
-The Multipath QUIC steering functionality makes use of multipath capable HTTP3 proxies that support the extended CONNECT method
-with the connect-udp protocol. The Multipath QUIC steering mode defines two datagram modes that are used for encapsulation of
-UDP payload. The default mode is to send HTTP datagrams unreliably over QUIC datagrams. The second, optional mode is to
-encapsulate UDP payload in HTTP datagrams that are extended with sequence numbers. The mode to use is decided based on
-the steering mode in use and application requirements through the use of ATSS Rules.
+ATSSS-LL, a "Lower Layer Functionality," operates beneath the IP layer. It's capable of steering to one path, switching
+from one path to another, and splitting all traffic types, encompassing both IP and Ethernet PDU sessions. However, it
+doesn't support splitting a single traffic flow among multiple paths. In contrast, MPTCP and Multipath QUIC, termed as
+"Higher Layer Functionalities," operate above the IP layer, steering, switching, and splitting TCP and UDP traffic
+respectively.
 
-The different steering modes determine the way traffic flows make use of concurrent paths. There are two modes where
-the use of sequence numbers is beneficial: Load Balancing traffic steering and Redundant traffic steering.
+The Multipath QUIC steering functionality uses multipath capable HTTP3 proxies supporting the extended CONNECT
+method with the connect-udp protocol. It establishes two datagram modes for UDP payload encapsulation. The default mode
+sends HTTP datagrams unreliably over QUIC datagrams, while the optional mode encapsulates UDP payload in HTTP datagrams
+augmented with sequence numbers.
 
-The Load Balancing steering mode implies parallel transmission over the 3GPP and non-3GPP accesses, this mode is
-commonly known as bandwidth aggregation. Splitting a data transmission over multiple pahts while increasing the
-available bandwith, often leads to packets being delivered out-of-order. Whether the packet disorder is a much of a
-problem depends on the properties of the protocols and applications carried over the proxied payload. Large degrees of
-reordering might trigger spurious packet loss detection. By buffering data received out-of-order an ATSSS endpoint can
-compensate the latency difference between the paths andminimize the amount of data delivered out-of-order to the final
-endpoints.
+Steering modes influence how traffic flows utilize concurrent paths. Load Balancing traffic steering and Redundant
+traffic steering are two modes where sequence numbers prove beneficial.
 
-Redundant traffic steering implies duplication of traffic over the 3GPP and non-3GPP accesses. Such a steering mode,
-while costly, is useful for applications and users with strong requirements on availability.  When data is duplicated
-at one end it needs to be de-duplicated at the other end. Sequence number enables the easiest way to perform de-duplication.
+The Load Balancing steering mode involves parallel transmission over the 3GPP and non-3GPP accesses, a process often
+referred to as bandwidth aggregation. Distributing data transmission over multiple paths, while increasing available
+bandwidth, can result in out-of-order packet delivery. The impact of packet disorder is largely dependent on the
+properties of the protocols and applications conveyed over the proxied payload. Negative effects of large degrees of
+packet reordering may include increased frequency of packet acknowledgements, inaccurate loss detection and spurious
+retransmissions. By buffering out-of-order data, an ATSSS endpoint can reconcile path latency differences and reduce the
+volume of data delivered out-of-order to the final endpoints. Furthermore, an ATSSS endpoint can set an upper bound on
+the time packets are delayed in its reorder buffer, thus incurring less packet delay variation in the face of loss than
+if the proxied payload is encoded over reliable streams. Which datagram mode is used for load balancing traffic steering
+depends on application requirements expressed as ATSSS rules.
+
+With the Redundant steering mode proxied payload is duplicated over the 3GPP and non-3GPP accesses. Despite
+the added cost, this steering mode is useful for applications and users with stringent availability requirements.
+Data duplication at one end necessitates de-duplication at the other. This can be efficiently accomplished through
+sequence numbering, which provides a straightforward method for de-duplication.
 
 
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
+
+This document uses notational conventions described in {{Section 1.3 of !RFC9000}}.
 
 # Sequence Number Datagram Extension
 
