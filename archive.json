@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-07-09T01:24:07.536463+00:00",
+  "timestamp": "2023-07-11T01:12:04.691738+00:00",
   "repo": "ihlar/draft-ihlar-masque-datagram-numbers",
   "labels": [
     {
@@ -49,6 +49,52 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
-  "pulls": []
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOIP11d85rHLgB",
+      "title": "Clarify the potential issues around HTTP Intermediaries and Datagram numbers",
+      "url": "https://github.com/ihlar/draft-ihlar-masque-datagram-numbers/issues/2",
+      "state": "OPEN",
+      "author": "gloinul",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "There are some considerations in regards to HTTP intermediaries and datagram numbers. If Datagram numbers are used for de-duplication or reordering, it is most efficient and can be adapted to actual latencies in the peer multipath QUIC endpoint. However, if that Multipath peer is just an HTTP intermediary one runs into these problems. Optimally the HTTP intermediary should implement the deduplication or reordering function. But, the default HTTP intermediary procedure is to ignore and forward the capsule negotiating this option. Thus, there appear need for additional discussion on what to write in this document for these aspects. ",
+      "createdAt": "2023-07-10T15:43:08Z",
+      "updatedAt": "2023-07-10T15:43:08Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOIP11d85VF8-F",
+      "title": "Edits on ATSSS section",
+      "url": "https://github.com/ihlar/draft-ihlar-masque-datagram-numbers/pull/1",
+      "state": "MERGED",
+      "author": "mirjak",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-07-10T14:18:14Z",
+      "updatedAt": "2023-07-10T16:06:05Z",
+      "baseRepository": "ihlar/draft-ihlar-masque-datagram-numbers",
+      "baseRefName": "main",
+      "baseRefOid": "5a6e42b55d2d567009d8108bbbf1fd2142460841",
+      "headRepository": "ihlar/draft-ihlar-masque-datagram-numbers",
+      "headRefName": "mirjak-patch-1",
+      "headRefOid": "8523d4e09113c30ee4acf224bce5fe8649464b43",
+      "closedAt": "2023-07-10T16:06:05Z",
+      "mergedAt": "2023-07-10T16:06:05Z",
+      "mergedBy": "ihlar",
+      "mergeCommit": {
+        "oid": "bcc336c982c88f87df70916e94d44b3cf09157c0"
+      },
+      "comments": [],
+      "reviews": []
+    }
+  ]
 }
